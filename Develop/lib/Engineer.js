@@ -1,5 +1,5 @@
 class Engineer {
-    constructor(name, id, email, officenumber){
+    constructor(name, id, email, github){
         this.name = name;
         this.id = id;
         this.email = email;
@@ -18,8 +18,8 @@ class Engineer {
         return this.github;
     }
     getRole () {
-        return "engineer";
+        return "Engineer";
     }
 }
 
-module.exports = Engineer;
+module.exports = Engineer
