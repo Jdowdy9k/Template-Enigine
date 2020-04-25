@@ -1,15 +1,15 @@
-const Manager = require("./lib/Manager");
-const Engineer = require("./lib/Engineer");
-const Intern = require("./lib/Intern");
-const Employee = require("./lib/Employee");
+const mktemp = require("./lib/htmlRenderer");
+const createManager = mktemp.createManager;
+const createEngineer = mktemp.createEngineer;
+const createIntern = mktemp.createIntern;
+//const createEmployee = mktemp.createEmployee;
+const renderMain = mktemp.renderMain;
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
-
-const OUTPUT_DIR = path.resolve(__dirname, "output");
+const OUTPUT_DIR = path.resolve("./output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
-const render = require("./lib/htmlRenderer");
 
 function selectMember() {
     inquirer
@@ -36,7 +36,7 @@ function selectMember() {
                 engineerQuestions()
             }
             else if (choice === "Don't add") {
-                render()
+                renderMain()
             }
         })
 }
@@ -72,7 +72,7 @@ function employeeQuestions() {
             }
         ])
         .then(function ({ name, id, email, officeNumber }) {
-            new Employee(name, id, email, officeNumber)
+            createEmployee(name, id, email, officeNumber)
             selectMember()
         })
 }
@@ -117,7 +117,7 @@ function managerQuestions() {
             }
         ])
         .then(function ({ name, id, email, officeNumber }) {
-            new Manager(name, id, email, officeNumber)
+            createManager(name, id, email, officeNumber)
             selectMember()
         })
 }
@@ -161,7 +161,7 @@ function engineerQuestions() {
             }
         ])
         .then(function ({ name, id, email, github }) {
-            new Engineer(name, id, email, github)
+            createEngineer(name, id, email, github)
             selectMember()
         })
 }
@@ -205,7 +205,7 @@ function internQuestions() {
             }
         ])
         .then(function ({name, id, email, school}) {
-            new Intern(name, id, email, school)
+            createIntern(name, id, email, school)
             selectMember()
         })
 }
