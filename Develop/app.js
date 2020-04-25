@@ -1,6 +1,7 @@
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+const Employee = require("./lib/Employee");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
@@ -17,41 +18,200 @@ function selectMember() {
                 type: "list",
                 message: "Select team member to add.",
                 name: "choice",
-                choices: ["Engineer", "Intern", "Manager", "Employee"]
+                choices: ["Engineer", "Intern", "Manager", "Employee", "Don't add"]
             }
 
         ])
         .then(function ({ choice }) {
-            if (choice === "Engineer") {
-                askEngineerQuestions()
+            if (choice === "Intern") {
+                internQuestions()
             }
-            else if (choice === "Intern") {
-                askInternQuestions()
+            else if (choice === "Manager") {
+                managerQuestions()
             }
-            else if (choice === "Don't add anybody else.") {
-                renderMain()
+            else if (choice === "Employee") {
+                employeeQuestions()
+            }
+            else if (choice === "Engineer") {
+                engineerQuestions()
+            }
+            else if (choice === "Don't add") {
+                render()
             }
         })
 }
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
+function employeeQuestions() {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "Enter the employee's name.",
+                name: "name",
+                validate: function validateName(name) {
+                    return name !== '';
+                }
+            },
+            {
+                type: "input",
+                message: "Enter the employee's id number.",
+                name: "id",
+                validate: function validateAge(id) {
+                    var reg = /^\d+$/;
+                    return reg.test(id) || "Id should be a number.";
+                }
+            },
+            {
+                type: "input",
+                message: "Enter the employee's email.",
+                name: "email",
+                validate: function ValidateEmail(email) {
+                    var reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                    return reg.test(email) || "You have entered an invalid email address!"
 
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
+                }
+            }
+        ])
+        .then(function ({ name, id, email, officeNumber }) {
+            new Employee(name, id, email, officeNumber)
+            selectMember()
+        })
+}
+function managerQuestions() {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "Enter the manager's name.",
+                name: "name",
+                validate: function validateName(name) {
+                    return name !== '';
+                }
+            },
+            {
+                type: "input",
+                message: "Enter the manager's id number.",
+                name: "id",
+                validate: function validateAge(id) {
+                    var reg = /^\d+$/;
+                    return reg.test(id) || "Id should be a number.";
+                }
+            },
+            {
+                type: "input",
+                message: "Enter the manager's email.",
+                name: "email",
+                validate: function ValidateEmail(email) {
+                    var reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                    return reg.test(email) || "You have entered an invalid email address!"
 
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
+                }
+            },
+            {
+                type: "input",
+                message: "Enter the manager's office number.",
+                name: "officeNumber",
+                validate: function validateAge(officeNumber) {
+                    var reg = /^\d+$/;
+                    return reg.test(officeNumber) || "Office Number should be a number.";
+                }
+            }
+        ])
+        .then(function ({ name, id, email, officeNumber }) {
+            new Manager(name, id, email, officeNumber)
+            selectMember()
+        })
+}
+function engineerQuestions() {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "Enter the engineer's name.",
+                name: "name",
+                validate: function validateName(name) {
+                    return name !== '';
+                }
+            },
+            {
+                type: "input",
+                message: "Enter the engineer's id number.",
+                name: "id",
+                validate: function validateAge(id) {
+                    var reg = /^\d+$/;
+                    return reg.test(id) || "Id should be a number.";
+                }
+            },
+            {
+                type: "input",
+                message: "Enter the engineers's email.",
+                name: "email",
+                validate: function ValidateEmail(email) {
+                    var reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                    return reg.test(email) || "You have entered an invalid email address!"
 
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
+                }
+            },
+            {
+                type: "input",
+                message: "Enter the engineer's github.",
+                name: "github",
+                validate: function validateGithub(github) {
+                    return github !== '';
+                }
+            }
+        ])
+        .then(function ({ name, id, email, github }) {
+            new Engineer(name, id, email, github)
+            selectMember()
+        })
+}
+function internQuestions() {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "Enter the intern's name.",
+                name: "name",
+                validate: function validateName(name) {
+                    return name !== '';
+                }
+            },
+            {
+                type: "input",
+                message: "Enter the intern's id number.",
+                name: "id",
+                validate: function validateAge(id) {
+                    var reg = /^\d+$/;
+                    return reg.test(id) || "Id should be a number.";
+                }
+            },
+            {
+                type: "input",
+                message: "Enter the intern's email.",
+                name: "email",
+                validate: function ValidateEmail(email) {
+                    var reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                    return reg.test(email) || "You have entered an invalid email address!"
 
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
+                }
+            },
+            {
+                type: "input",
+                message: "Enter the intern's school.",
+                name: "school",
+                validate: function validateSchool(name) {
+                    return name !== '';
+                }
+            }
+        ])
+        .then(function ({name, id, email, school}) {
+            new Intern(name, id, email, school)
+            selectMember()
+        })
+}
+function init() {
+    selectMember()
+}
+
+init();
+
