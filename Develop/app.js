@@ -17,24 +17,21 @@ function selectMember() {
                 type: "list",
                 message: "Select team member to add.",
                 name: "choice",
-                choices: ["Engineer", "Intern", "Manager", "Employee", "Don't add"]
+                choices: ["Engineer", "Intern", "Manager", "Finish"]
             }
 
         ])
         .then(function ({ choice }) {
             if (choice === "Intern") {
-                internQuestions()
+                newIntern()
             }
             else if (choice === "Manager") {
                 newManager()
             }
-            else if (choice === "Employee") {
-                newEmployee()
-            }
             else if (choice === "Engineer") {
-                engineerQuestions()
+                newEngineer()
             }
-            else if (choice === "Don't add") {
+            else if (choice === "Finish") {
                 printFile()
             }
         })
@@ -88,7 +85,7 @@ function newManager() {
             selectMember();
         });
 }
-function engineerQuestions() {
+function newEngineer() {
     inquirer
         .prompt([
             {
@@ -128,14 +125,14 @@ function engineerQuestions() {
             }
         ])
         .then(response => {
-            const newIntern = new Engineer(response.name, response.id, response.email, response.school);
+            const newEngineer = new Engineer(response.name, response.id, response.email, response.school);
     
-            employeeArray.push(newIntern);
+            employeeArray.push(newEngineer);
     
-            nextQuestion();
+            selectMember();
         });
 }
-function internQuestions() {
+function newIntern() {
     inquirer
         .prompt([
             {
@@ -179,7 +176,7 @@ function internQuestions() {
     
             employeeArray.push(newIntern);
     
-            nextQuestion();
+            selectMember();
         });
 }
 

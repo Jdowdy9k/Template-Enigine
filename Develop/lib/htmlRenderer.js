@@ -1,9 +1,5 @@
 const path = require("path");
 const fs = require("fs");
-const employees = require("./Employee");
-const Manager = require("./Manager");
-const Engineer = require("./Engineer");
-const Intern = require("./Intern");
 const templatesDir = "./templates/";
 
 const render = employees => {
@@ -56,21 +52,6 @@ const renderIntern = Intern => {
   return template;
 };
 
-function createManager(name, id, email, officeNumber){
-  const manager = new Manager(name, id, email, officeNumber)
-  renderManager(manager)
-}
-
-function createEngineer(name, id, email, github){
-  const engineer = new Engineer(name, id, email, github)
-  renderEngineer(engineer)
-}
-
-function createIntern(name, id, email, school){
-  const intern = new Intern(name, id, email, school)
-  renderIntern(intern)
-}
-
 const renderMain = html => {
   const template = fs.readFileSync(path.resolve(templatesDir, "main.html"), "utf8");
   return replacePlaceholders(template, "team", html);
@@ -82,7 +63,3 @@ const replacePlaceholders = (template, placeholder, value) => {
 };
 
 module.exports = render;
-  /*createManager: createManager,
-  createEngineer: createEngineer,
-  createIntern: createIntern,
-  renderMain: renderMain*/
