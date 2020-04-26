@@ -11,18 +11,18 @@ const render = employees => {
 
   html.push(employees
     .filter(employee => employee.getRole() === "Manager")
-    .map(Manager => renderManager(Manager))
+    .map(Manager => renderManager(Manager)).join("")
   );
   html.push(employees
     .filter(employee => employee.getRole() === "Engineer")
-    .map(engineer => renderEngineer(engineer))
+    .map(engineer => renderEngineer(engineer)).join("")
   );
   html.push(employees
     .filter(employee => employee.getRole() === "Intern")
-    .map(intern => renderIntern(intern))
+    .map(intern => renderIntern(intern)).join("")
   );
 
-  return render(html.join(""));
+  return renderMain(html.join(""));
 
 };
 
@@ -81,9 +81,8 @@ const replacePlaceholders = (template, placeholder, value) => {
   return template.replace(pattern, value);
 };
 
-module.exports ={
-  createManager: createManager,
+module.exports = render;
+  /*createManager: createManager,
   createEngineer: createEngineer,
   createIntern: createIntern,
-  renderMain: renderMain
-};
+  renderMain: renderMain*/

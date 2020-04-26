@@ -1,15 +1,14 @@
-const mktemp = require("./lib/htmlRenderer");
-const createManager = mktemp.createManager;
-const createEngineer = mktemp.createEngineer;
-const createIntern = mktemp.createIntern;
-//const createEmployee = mktemp.createEmployee;
-const renderMain = mktemp.renderMain;
+const render = require("./lib/htmlRenderer");
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
-const OUTPUT_DIR = path.resolve("./output");
+const OUTPUT_DIR = path.resolve("output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
+const employeeArray = [];
 
 function selectMember() {
     inquirer
@@ -27,56 +26,21 @@ function selectMember() {
                 internQuestions()
             }
             else if (choice === "Manager") {
-                managerQuestions()
+                newManager()
             }
             else if (choice === "Employee") {
-                employeeQuestions()
+                newEmployee()
             }
             else if (choice === "Engineer") {
                 engineerQuestions()
             }
             else if (choice === "Don't add") {
-                renderMain()
+                printFile()
             }
         })
 }
-function employeeQuestions() {
-    inquirer
-        .prompt([
-            {
-                type: "input",
-                message: "Enter the employee's name.",
-                name: "name",
-                validate: function validateName(name) {
-                    return name !== '';
-                }
-            },
-            {
-                type: "input",
-                message: "Enter the employee's id number.",
-                name: "id",
-                validate: function validateAge(id) {
-                    var reg = /^\d+$/;
-                    return reg.test(id) || "Id should be a number.";
-                }
-            },
-            {
-                type: "input",
-                message: "Enter the employee's email.",
-                name: "email",
-                validate: function ValidateEmail(email) {
-                    var reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-                    return reg.test(email) || "You have entered an invalid email address!"
 
-                }
-            }
-        ])
-        .then(function ({ name, id, email, officeNumber }) {
-            createEmployee(name, id, email, officeNumber)
-            selectMember()
-        })
-}
-function managerQuestions() {
+function newManager() {
     inquirer
         .prompt([
             {
@@ -116,10 +80,13 @@ function managerQuestions() {
                 }
             }
         ])
-        .then(function ({ name, id, email, officeNumber }) {
-            createManager(name, id, email, officeNumber)
-            selectMember()
-        })
+        .then(response => {
+            const newManager = new Manager(response.name, response.id, response.email, response.school);
+    
+            employeeArray.push(newManager);
+    
+            selectMember();
+        });
 }
 function engineerQuestions() {
     inquirer
@@ -160,10 +127,13 @@ function engineerQuestions() {
                 }
             }
         ])
-        .then(function ({ name, id, email, github }) {
-            createEngineer(name, id, email, github)
-            selectMember()
-        })
+        .then(response => {
+            const newIntern = new Engineer(response.name, response.id, response.email, response.school);
+    
+            employeeArray.push(newIntern);
+    
+            nextQuestion();
+        });
 }
 function internQuestions() {
     inquirer
@@ -204,11 +174,27 @@ function internQuestions() {
                 }
             }
         ])
-        .then(function ({name, id, email, school}) {
-            createIntern(name, id, email, school)
-            selectMember()
-        })
+        .then(response => {
+            const newIntern = new Intern(response.name, response.id, response.email, response.school);
+    
+            employeeArray.push(newIntern);
+    
+            nextQuestion();
+        });
 }
+
+const printFile = () => {
+    const thisNewTeam = render(employeeArray);
+
+    fs.writeFile(outputPath, thisNewTeam, function(err){
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Success! Your team.html file is in your output folder.");
+        }
+    });
+}
+
 function init() {
     selectMember()
 }
