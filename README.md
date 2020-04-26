@@ -1,18 +1,18 @@
-## ** Team Template Generator README ** 
-## ** Username **
+# * Team Template Generator README * 
+## * Username *
     Jdowdy9k  
-## ** Email **
+## * Email *
     Jdowdy9k@gmail.com 
 # App Description 
     Cli app that prompts user to create an html page with Team member info. 
 ## Table of Contents 
      
-### Installation 
+## Installation 
     run node app.js 
-## Contributors 
+### Contributors 
     Justin Dowdy 
-## Testing 
-    none 
+### Testing 
+    tests included in test folder 
 
                 
 [![NPM Version](https://img.shields.io/npm/v/npm.svg?style=flat)]()
